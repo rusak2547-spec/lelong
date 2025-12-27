@@ -1,6 +1,6 @@
 import prisma from '@/lib/prisma'
 import Link from 'next/link'
-import Image from 'next/image'
+
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
@@ -53,7 +53,7 @@ export default async function DashboardPage() {
                products.map(product => (
                  <TableRow key={product.id}>
                     <TableCell>
-                      <Image 
+                      <img 
                         src={product.imageUrl} 
                         alt={product.title} 
                         width={40}
@@ -76,12 +76,12 @@ export default async function DashboardPage() {
                     <TableCell className="text-right">
                        <div className="flex justify-end gap-2">
                           <form action={toggleProductStatus.bind(null, product.id, product.status)}>
-                             <Button variant="outline" size="icon" title="Toggle Status">
+                             <Button type="submit" variant="outline" size="icon" title="Toggle Status">
                                <RotateCcw className="h-4 w-4" />
                              </Button>
                           </form>
                           <form action={deleteProduct.bind(null, product.id)}>
-                             <Button variant="destructive" size="icon" title="Delete">
+                             <Button type="submit" variant="destructive" size="icon" title="Delete">
                                <Trash2 className="h-4 w-4" />
                              </Button>
                           </form>

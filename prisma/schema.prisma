@@ -6,7 +6,7 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = env("DATABASE_URL")
+  url      = "mysql://u250053192_jr:Jrxxx828@srv2094.hstgr.io:3306/u250053192_jr"
 }
 
 // Model untuk Produk Emas
