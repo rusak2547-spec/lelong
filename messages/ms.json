@@ -1,0 +1,42 @@
+{
+  "Metadata": {
+    "title": "Pawnshop Brunei - Lelong Emas & Barang Kemas",
+    "description": "Sertai lelongan emas barang kemas sitaan Ar-Rahnu. Harga paling rendah. Bida sekarang di Telegram Pawnshop_vip."
+  },
+  "Header": {
+    "brand": "Pawnshop Brunei"
+  },
+  "Hero": {
+    "title": "Lelong Emas & Barang Kemas",
+    "subtitle": "Dapatkan emas sitaan Ar-Rahnu & Bank dengan harga lelong.",
+    "highlight": "Bebas Upah Tukang. Kualiti Terjamin."
+  },
+  "Home": {
+    "noProducts": "Tiada produk masa ini."
+  },
+  "ProductCard": {
+    "viewDetail": "Lihat Detail",
+    "openBid": "Harga Buka",
+    "weight": "Berat"
+  },
+  "ProductDetail": {
+    "back": "Kembali ke Katalog",
+    "posted": "Diposting",
+    "weight": "Berat (Weight)",
+    "openBid": "Harga Buka (Open Bid)",
+    "description": "Deskripsi Produk",
+    "trust1_title": "Emas Tulin",
+    "trust1_desc": "Emas asli",
+    "trust2_title": "Bebas Upah",
+    "trust2_desc": "Tiada caj tambahan",
+    "trust3_title": "Timbang Tepat",
+    "trust3_desc": "Timbangan jujur",
+    "cta_text": "Berminat dengan item ini? Sertai grup Telegram kami untuk membida!",
+    "cta_sold": "Item Telah Dijual (SOLD)",
+    "safe_transaction": "Transaksi Selamat & Sah (Peniaga Berdaftar)"
+  },
+  "Footer": {
+    "copyright": "All rights reserved.",
+    "company": "Pawnshop Brunei"
+  }
+}

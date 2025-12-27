@@ -1,0 +1,42 @@
+{
+  "Metadata": {
+    "title": "Pawnshop Brunei - Gold & Jewelry Auction",
+    "description": "Join Ar-Rahnu seized gold and jewelry auctions. Lowest prices. Bid now on Telegram Pawnshop_vip."
+  },
+  "Header": {
+    "brand": "Pawnshop Brunei"
+  },
+  "Hero": {
+    "title": "Gold & Jewelry Auction",
+    "subtitle": "Get Ar-Rahnu & Bank seized gold at auction prices.",
+    "highlight": "No Workmanship Fees. Guaranteed Quality."
+  },
+  "Home": {
+    "noProducts": "No products available at the moment."
+  },
+  "ProductCard": {
+    "viewDetail": "View Details",
+    "openBid": "Open Price",
+    "weight": "Weight"
+  },
+  "ProductDetail": {
+    "back": "Back to Catalog",
+    "posted": "Posted",
+    "weight": "Weight",
+    "openBid": "Open Bid",
+    "description": "Product Description",
+    "trust1_title": "Pure Gold",
+    "trust1_desc": "Authentic Gold",
+    "trust2_title": "No Workmanship Fee",
+    "trust2_desc": "No extra charges",
+    "trust3_title": "Accurate Weight",
+    "trust3_desc": "Honest weighing",
+    "cta_text": "Interested in this item? Join our Telegram group to bid!",
+    "cta_sold": "Item Sold",
+    "safe_transaction": "Safe & Legitimate Transaction (Registered Dealer)"
+  },
+  "Footer": {
+    "copyright": "All rights reserved.",
+    "company": "Pawnshop Brunei"
+  }
+}
