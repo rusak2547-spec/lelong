@@ -29,18 +29,13 @@ export async function createProduct(formData: FormData) {
   const bytes = await image.arrayBuffer()
   const buffer = Buffer.from(bytes)
   
-  // HARDCODED ABSOLUTE PATH FOR HOSTINGER
-  // Fallback to local process.cwd() if not on server (for local dev)
-  const isProduction = process.env.NODE_ENV === 'production';
-  const uploadDir = isProduction 
-    ? '/home/u250053192/domains/pawnshop.group/public_html/public/uploads'
-    : join(process.cwd(), 'public', 'uploads');
+  // Standard VPS Path (process.cwd() works fine with PM2)
+  const uploadDir = join(process.cwd(), 'public', 'uploads')
 
   try {
      await mkdir(uploadDir, { recursive: true })
   } catch (error) {
      console.error('Error creating directory:', error)
-     // Continue regardless, folder might exist or permission error will catch on write
   }
   
   const fileName = `${Date.now()}-${image.name.replace(/\s/g, '-')}`
@@ -50,7 +45,7 @@ export async function createProduct(formData: FormData) {
     await writeFile(filePath, buffer)
   } catch (err) {
     console.error('Error writing file:', err)
-    throw new Error('Failed to save image file on server')
+    throw new Error('Failed to save image file')
   }
 
   const imageUrl = `/uploads/${fileName}`
