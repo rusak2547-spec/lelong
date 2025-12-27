@@ -1,6 +1,7 @@
 import prisma from '@/lib/prisma'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -73,9 +74,11 @@ export default async function ProductDetailPage({
              {/* Image Section */}
              <div className="space-y-4">
                 <div className="aspect-square bg-white dark:bg-zinc-900 rounded-2xl overflow-hidden border shadow-sm relative">
-                   <img 
+                   <Image 
                      src={product.imageUrl} 
                      alt={product.title}
+                     fill
+                     sizes="(max-width: 768px) 100vw, 50vw"
                      className="object-cover w-full h-full"
                    />
 

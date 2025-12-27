@@ -1,5 +1,6 @@
 import prisma from '@/lib/prisma'
 import Link from 'next/link'
+import Image from 'next/image'
 
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -53,7 +54,7 @@ export default async function DashboardPage() {
                products.map(product => (
                  <TableRow key={product.id}>
                     <TableCell>
-                      <img 
+                      <Image 
                         src={product.imageUrl} 
                         alt={product.title} 
                         width={40}
