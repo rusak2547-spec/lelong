@@ -1,4 +1,8 @@
 import { PrismaClient } from '@prisma/client'
+import dotenv from 'dotenv'
+
+// Explicitly load .env file
+dotenv.config()
 
 const prismaClientSingleton = () => {
   return new PrismaClient()
