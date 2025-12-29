@@ -44,3 +44,11 @@ dev.db.txt
 
 # Vercel
 .vercel
+
+# Legacy / VPS Deployment Files
+*.nginx
+*.conf
+*.tar.gz
+server.config
+ecosystem.config.js
+install.sh
