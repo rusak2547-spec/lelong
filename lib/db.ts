@@ -13,7 +13,7 @@ const __dirname = dirname(__filename);
 // - In Development: Uses local file (dev.db) if Env vars are missing
 const getDbConfig = () => {
   const url = process.env.TURSO_DATABASE_URL || process.env.DATABASE_URL;
-  const authToken = process.env.TURSO_AUTH_TOKEN || process.env.TURSO_TOKEN || process.env.AUTH_TOKEN;
+  const authToken = process.env.TURSO_AUTH_TOKEN || process.env.TURSO_TOKEN || process.env.AUTH_TOKEN || process.env.DATABASE_AUTH_TOKEN;
 
   // Use production config if URL is present (Token might be optional for some setups, or embedded)
   // But for Turso/LibSQL usually token is needed.
