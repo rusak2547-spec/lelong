@@ -1,25 +1,11 @@
 import { defineConfig } from 'drizzle-kit';
-import { join, dirname } from 'path';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-// Get database path - same logic as lib/db.ts
-const getDbPath = () => {
-  const envPath = process.env.DATABASE_URL?.replace('file:', '').replace('./', '');
-  if (envPath) {
-    if (envPath.startsWith('/')) return envPath;
-    return join(__dirname, envPath);
-  }
-  return join(__dirname, 'dev.db');
-};
 
 export default defineConfig({
   schema: './lib/schema.ts',
   out: './drizzle',
-  dialect: 'sqlite',
+  dialect: 'turso',
   dbCredentials: {
-    url: getDbPath(),
+    url: process.env.TURSO_DATABASE_URL || process.env.DATABASE_URL || 'file:./dev.db',
+    authToken: process.env.TURSO_AUTH_TOKEN || process.env.TURSO_TOKEN || process.env.AUTH_TOKEN || process.env.DATABASE_AUTH_TOKEN,
   },
 });
