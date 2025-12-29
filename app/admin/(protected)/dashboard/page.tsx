@@ -6,7 +6,7 @@ import { desc } from 'drizzle-orm'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { Plus, Trash2, RotateCcw } from 'lucide-react'
+import { Plus, Trash2, RotateCcw, Settings } from 'lucide-react'
 import { deleteProduct, toggleProductStatus } from '@/modules/product/actions'
 
 export default async function DashboardPage() {
@@ -16,7 +16,10 @@ export default async function DashboardPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
          <h1 className="text-2xl font-bold tracking-tight">Product Catalog</h1>
-         <Button render={<Link href="/admin/products/new" />}><Plus className="mr-2 h-4 w-4" /> Add Product</Button>
+         <div className="flex gap-2">
+            <Button variant="outline" render={<Link href="/admin/settings" />}><Settings className="mr-2 h-4 w-4" /> Global Settings</Button>
+            <Button render={<Link href="/admin/products/new" />}><Plus className="mr-2 h-4 w-4" /> Add Product</Button>
+         </div>
       </div>
       <div className="rounded-md border bg-white dark:bg-zinc-950">
         <Table>
