@@ -12,11 +12,16 @@ const __dirname = dirname(__filename);
 // - In Production (Vercel): Uses TURSO_DATABASE_URL and TURSO_AUTH_TOKEN
 // - In Development: Uses local file (dev.db) if Env vars are missing
 const getDbConfig = () => {
-  const url = process.env.TURSO_DATABASE_URL;
-  const authToken = process.env.TURSO_AUTH_TOKEN;
+  const url = process.env.TURSO_DATABASE_URL || process.env.DATABASE_URL;
+  const authToken = process.env.TURSO_AUTH_TOKEN || process.env.TURSO_TOKEN || process.env.AUTH_TOKEN;
 
-  if (url && authToken) {
-    return { url, authToken };
+  // Use production config if URL is present (Token might be optional for some setups, or embedded)
+  // But for Turso/LibSQL usually token is needed.
+  if (url) {
+    return { 
+      url, 
+      authToken: authToken || undefined 
+    };
   }
 
   // Fallback to local file for development
