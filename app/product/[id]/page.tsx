@@ -42,7 +42,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
   const { telegramUrl } = await getGlobalSettings()
 
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950">
+    <div className="min-h-screen bg-background">
        <div className="container mx-auto px-4 py-8">
           <div className="mb-6">
              <Button variant="ghost" size="sm" render={<Link href="/" />}>
@@ -51,7 +51,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
-             <div className="aspect-square bg-white dark:bg-zinc-900 rounded-2xl overflow-hidden border shadow-sm relative">
+             <div className="aspect-square bg-card rounded-2xl overflow-hidden border shadow-sm relative">
                 <Image src={product.imageUrl} alt={product.title} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
                 {product.status === 'SOLD' && (
                     <div className="absolute inset-0 bg-black/60 flex items-center justify-center backdrop-blur-[2px]">
@@ -66,27 +66,27 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                         <Badge variant={product.status === 'AVAILABLE' ? 'default' : 'destructive'} className="text-sm px-3 py-1">
                           {product.status === 'AVAILABLE' ? 'TERSEDIA' : 'TERJUAL'}
                         </Badge>
-                        <span className="text-sm text-zinc-500">Diposting {createdAtDate.toLocaleDateString('id-ID')}</span>
+                        <span className="text-sm text-muted-foreground">Diposting {createdAtDate.toLocaleDateString('id-ID')}</span>
                     </div>
-                    <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">{product.title}</h1>
+                    <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">{product.title}</h1>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                     {(product.category === 'GOLD' || !product.category) && (
-                        <div className="p-4 rounded-lg bg-white dark:bg-zinc-900 border">
-                            <div className="flex items-center gap-2 text-zinc-500 mb-1"><Scale className="h-4 w-4" /><span className="text-sm">Berat</span></div>
+                        <div className="p-4 rounded-lg bg-card border">
+                            <div className="flex items-center gap-2 text-muted-foreground mb-1"><Scale className="h-4 w-4" /><span className="text-sm">Berat</span></div>
                             <p className="text-2xl font-semibold">{product.weight}g</p>
                         </div>
                     )}
-                     <div className={`p-4 rounded-lg bg-white dark:bg-zinc-900 border ${(product.category === 'GOLD' || !product.category) ? '' : 'col-span-2'}`}>
-                        <div className="flex items-center gap-2 text-zinc-500 mb-1"><Coins className="h-4 w-4" /><span className="text-sm">Harga Buka</span></div>
+                     <div className={`p-4 rounded-lg bg-card border ${(product.category === 'GOLD' || !product.category) ? '' : 'col-span-2'}`}>
+                        <div className="flex items-center gap-2 text-muted-foreground mb-1"><Coins className="h-4 w-4" /><span className="text-sm">Harga Buka</span></div>
                         <p className="text-2xl font-semibold">Rp {product.price.toLocaleString('id-ID')}</p>
                     </div>
                 </div>
 
                 <div className="prose dark:prose-invert">
                     <h3 className="text-lg font-semibold mb-2">Deskripsi Produk</h3>
-                    <p className="whitespace-pre-wrap text-zinc-600 dark:text-zinc-300 leading-relaxed">{product.description}</p>
+                    <p className="whitespace-pre-wrap text-muted-foreground leading-relaxed">{product.description}</p>
                 </div>
 
                 {(product.category === 'GOLD' || !product.category) && (
@@ -104,15 +104,15 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                 )}
 
                 <div className="pt-6 border-t">
-                    <p className="text-sm text-zinc-500 mb-4 text-center">Tertarik dengan barang ini? Gabung grup Telegram kami untuk ikut lelang!</p>
+                    <p className="text-sm text-muted-foreground mb-4 text-center">Tertarik dengan barang ini? Gabung grup Telegram kami untuk ikut lelang!</p>
 {product.status === 'AVAILABLE' ? (
-                         <Button className="w-full h-14 text-lg font-semibold bg-blue-500 hover:bg-blue-600" render={<Link href={telegramUrl} target="_blank" />}>
+                         <Button className="w-full h-14 text-lg font-semibold bg-primary text-primary-foreground hover:bg-primary/90" render={<Link href={telegramUrl} target="_blank" />}>
                             <Send className="mr-2 h-5 w-5" /> Gabung Telegram untuk Bid
                          </Button>
                     ) : (
                          <Button disabled className="w-full h-14 text-lg font-semibold">Barang Sudah Terjual</Button>
                     )}
-                    <div className="mt-4 flex items-center justify-center gap-2 text-xs text-zinc-400">
+                    <div className="mt-4 flex items-center justify-center gap-2 text-xs text-muted-foreground">
                         <ShieldCheck className="h-3 w-3" /><span>Transaksi Aman & Terpercaya</span>
                     </div>
                 </div>
