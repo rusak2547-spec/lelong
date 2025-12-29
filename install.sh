@@ -4,70 +4,65 @@
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 RED='\033[0;31m'
-NC='\033[0m' # No Color
+NC='\033[0m'
 
-echo -e "${GREEN}=== Lelong App Auto-Installer ===${NC}"
-echo "This script will set up Node.js, Nginx, SSL, and deploy the app."
-echo ""
+echo -e "${GREEN}=== Lelong App Auto-Installer (Drizzle Edition) ===${NC}"
+# Enable logging to install.log
+exec > >(tee -i install.log)
+exec 2>&1
 
-# 1. Ask for Configuration
-read -p "Enter your Domain Name (e.g., pawnshop.group): " DOMAIN_NAME
-read -p "Enter Database URL (mysql://user:pass@host:3306/db): " DB_URL
+# Read domain from server.config
+DOMAIN_NAME=$(grep '^DOMAIN_NAME=' server.config | cut -d'=' -f2)
+APP_DIR=$(grep '^APP_DIR=' server.config | cut -d'=' -f2)
+PM2_NAME=$(grep '^PM2_NAME=' server.config | cut -d'=' -f2)
+# Helper for sudo (Standard interactive)
+# No auto-password injection to prevent pipe conflicts
 
-if [ -z "$DOMAIN_NAME" ] || [ -z "$DB_URL" ]; then
-    echo -e "${RED}Error: Domain and Database URL are required.${NC}"
-    exit 1
+if [ -z "$DOMAIN_NAME" ]; then
+    DOMAIN_NAME="pawnshop.group"
 fi
 
-echo -e "${YELLOW}Updating system...${NC}"
+echo "Domain: $DOMAIN_NAME"
+echo ""
+
+
+echo -e "${YELLOW}Installing system dependencies (Node.js 20, Nginx, Certbot)...${NC}"
 sudo apt update && sudo apt upgrade -y
+sudo apt install -y curl git unzip build-essential
 
-# 2. Install Dependencies
-echo -e "${YELLOW}Installing system dependencies...${NC}"
-sudo apt install -y curl git nginx certbot python3-certbot-nginx build-essential
-
-# 3. Install Node.js 20 (LTS)
-echo -e "${YELLOW}Installing Node.js...${NC}"
+# Install Node.js 20
 curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-sudo apt install -y nodejs
+sudo apt install -y nodejs nginx certbot python3-certbot-nginx
 
-# 4. Setup Application
-echo -e "${YELLOW}Setting up application...${NC}"
-APP_DIR=$(pwd)
+# Verify Node version
+echo -e "${GREEN}Node version: $(node -v)${NC}"
 
-# Create .env file
-echo "DATABASE_URL=\"$DB_URL\"" > .env
-
-# Install Project Deps
 echo -e "${YELLOW}Installing project dependencies...${NC}"
 npm install
 
-# Generate Prisma
-echo -e "${YELLOW}Generating Prisma Client...${NC}"
-npx prisma generate
-
-# Database Migration/Push
-echo -e "${YELLOW}Setting up database schema...${NC}"
-npx prisma db push
+# Database Schema Sync (Drizzle)
+echo -e "${YELLOW}Syncing database schema with Drizzle...${NC}"
+npx drizzle-kit push --force
 
 # Build Next.js
 echo -e "${YELLOW}Building application...${NC}"
 npm run build
 
-# 5. Setup PM2
+# Setup PM2
 echo -e "${YELLOW}Setting up Process Manager (PM2)...${NC}"
 sudo npm install -g pm2
+pm2 delete lelong 2>/dev/null
 pm2 start ecosystem.config.js
 pm2 save
-pm2 startup | tail -n 1 | bash # Execute the command PM2 tells us to
+pm2 startup | tail -n 1 | bash
 
-# 6. Configure Nginx
+# Configure Nginx
 echo -e "${YELLOW}Configuring Nginx...${NC}"
 NGINX_CONF="/etc/nginx/sites-available/$DOMAIN_NAME"
 
-sudo bash -c "cat > $NGINX_CONF" <<EOF
-server {
-    server_name $DOMAIN_NAME www.$DOMAIN_NAME;
+# Create Nginx config
+echo "server {
+    server_name $DOMAIN_NAME;
 
     location / {
         proxy_pass http://localhost:3000;
@@ -77,19 +72,17 @@ server {
         proxy_set_header Host \$host;
         proxy_cache_bypass \$http_upgrade;
     }
-}
-EOF
+}" | sudo tee $NGINX_CONF > /dev/null
 
-# Enable Site
 sudo ln -sf $NGINX_CONF /etc/nginx/sites-enabled/
 sudo rm -f /etc/nginx/sites-enabled/default
 sudo nginx -t && sudo systemctl restart nginx
 
-# 7. Setup SSL (Let's Encrypt)
+# Setup SSL
 echo -e "${YELLOW}Setting up SSL with Let's Encrypt...${NC}"
-sudo certbot --nginx -d $DOMAIN_NAME -d www.$DOMAIN_NAME --non-interactive --agree-tos -m admin@$DOMAIN_NAME --redirect
+sudo certbot --nginx -d $DOMAIN_NAME --non-interactive --agree-tos -m admin@$DOMAIN_NAME --redirect
 
-# 8. Setup Uploads Directory Permission
+# Fix permissions
 echo -e "${YELLOW}Fixing upload permissions...${NC}"
 mkdir -p public/uploads
 chmod -R 777 public/uploads

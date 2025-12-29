@@ -1,33 +1,36 @@
 'use server'
 
-import prisma from '@/lib/prisma'
+import db from '@/lib/db'
+import { globalSettings } from '@/lib/schema'
 import { revalidatePath } from 'next/cache'
+import { eq } from 'drizzle-orm'
 
 export async function getGlobalSettings() {
-  const settings = await prisma.globalSettings.findFirst()
-  if (!settings) {
+  const result = await db.select().from(globalSettings).limit(1)
+  
+  if (result.length === 0) {
     // Return default if not set
     return { telegramUrl: 'https://t.me/' }
   }
-  return settings
+  // Ensure telegramUrl is always a string (Drizzle may return null)
+  return { 
+    ...result[0],
+    telegramUrl: result[0].telegramUrl ?? 'https://t.me/' 
+  }
 }
 
 export async function updateGlobalSettings(formData: FormData) {
   const telegramUrl = formData.get('telegramUrl') as string
 
   // Upsert (Create if first time, Update if exists)
-  // Since we don't know the ID, we findFirst and update, or create.
-  const existing = await prisma.globalSettings.findFirst()
+  const existing = await db.select().from(globalSettings).limit(1)
 
-  if (existing) {
-    await prisma.globalSettings.update({
-      where: { id: existing.id },
-      data: { telegramUrl }
-    })
+  if (existing.length > 0) {
+    await db.update(globalSettings)
+      .set({ telegramUrl })
+      .where(eq(globalSettings.id, existing[0].id))
   } else {
-    await prisma.globalSettings.create({
-      data: { telegramUrl }
-    })
+    await db.insert(globalSettings).values({ telegramUrl })
   }
 
   revalidatePath('/')

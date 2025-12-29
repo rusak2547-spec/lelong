@@ -2,7 +2,9 @@
 
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
-import prisma from '@/lib/prisma'
+import db from '@/lib/db'
+import { admins } from '@/lib/schema'
+import { eq } from 'drizzle-orm'
 
 export async function login(prevState: { error?: string } | null, formData: FormData) {
   const username = formData.get('username') as string
@@ -16,9 +18,8 @@ export async function login(prevState: { error?: string } | null, formData: Form
   
   let admin = null
   try {
-    admin = await prisma.admin.findUnique({
-      where: { username }
-    })
+    const result = await db.select().from(admins).where(eq(admins.username, username)).limit(1)
+    admin = result[0] || null
   } catch (error) {
     console.error('Database connection failed:', error)
     // Fallback to hardcoded creds if DB fails
