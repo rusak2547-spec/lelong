@@ -11,12 +11,15 @@
     "db:studio": "drizzle-kit studio",
     "test:endpoints": "node scripts/test-endpoints.js"
   },
+    "engines": {
+    "node": ">=20.0.0"
+  },
   "dependencies": {
     "@base-ui/react": "^1.0.0",
     "@libsql/client": "^0.15.15",
     "@tailwindcss/postcss": "^4.1.18",
     "@vercel/blob": "^2.0.0",
-    "better-sqlite3": "^11.0.0",
+    "better-sqlite3": "^9.6.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "dotenv": "^17.2.3",
